@@ -1,0 +1,32 @@
+pipeline {
+    agent {
+        docker {
+            image 'maven:3.9.7-sapmachine-21'
+        }
+    }
+    
+    environment {
+        // Defina variáveis de ambiente, se necessário
+        GIT_REPO = 'https://github.com/CharlanSofist/pact_example.git'
+        GIT_BRANCH = 'main'
+    }
+
+    stages {
+        stage('Copy Project Files') {
+            steps {
+                git branch: "${GIT_BRANCH}", url: "${GIT_REPO}"
+            }
+        }
+        
+       stage('Execute Provider Tests') {
+            steps {
+                script {
+                    sh '''
+                    cd provider
+                    mvn clean test -Dpact.verifier.publishResults=true -Dpact.provider.version=1.0.0 -Dpact.provider.tag=main -Dpact.provider.tag=test 
+                    '''
+                }
+            }
+        }
+    }
+}

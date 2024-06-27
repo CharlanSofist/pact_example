@@ -1,0 +1,37 @@
+pipeline {
+    agent {
+        docker {
+            image 'maven:3.9.7-sapmachine-21'
+        }
+    }
+    
+    environment {
+        // Defina variáveis de ambiente, se necessário
+        GIT_REPO = 'https://github.com/CharlanSofist/pact_example.git'
+        GIT_BRANCH = 'main'
+    }
+
+    stages {
+        stage('Copy Project Files') {
+            steps {
+                git branch: "${GIT_BRANCH}", url: "${GIT_REPO}"
+            }
+        }
+       stage('Execute Consumer Tests') {
+            steps {
+                script {
+                    sh '''
+                    cd consumer
+                    mvn clean test
+                    ls -l target/pacts
+                    '''
+                }
+            }
+        }
+    }
+    post {
+        always {
+            archiveArtifacts artifacts: 'consumer/target/pacts/*.json', allowEmptyArchive: true
+        }
+    }
+}

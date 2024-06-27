@@ -1,0 +1,52 @@
+pipeline {
+    agent any
+    
+    stages {
+       stage('Consumer Tests') {
+            steps {
+                script {
+                    def jobName = 'executors/Consumer_Tests'
+                    def downstreamJobResult = build job: jobName, propagate: false, wait: true, parameters: []
+                    if (downstreamJobResult.getResult() == "FAILURE") {
+                         error("Erro na execução")
+                    }
+                }
+            }
+        }
+
+       stage('Publish Contracts') {
+            steps {
+                script {
+                    def jobName = 'executors/Publish_Contracts'
+                    def downstreamJobResult = build job: jobName, propagate: false, wait: true, parameters: []
+                    if (downstreamJobResult.getResult() == "FAILURE") {
+                         error("Erro na execução")
+                    }
+                }
+            }
+        }
+        
+       stage('Provider Tests') {
+            steps {
+                script {
+                    def jobName = 'executors/Provider_Tests'
+                    def downstreamJobResult = build job: jobName, propagate: false, wait: true, parameters: []
+                    if (downstreamJobResult.getResult() == "FAILURE") {
+                         error("Erro na execução")
+                    }
+                }
+            }
+        }
+       stage('Can I Deploy?') {
+            steps {
+                script {
+                    def jobName = 'executors/Can_I_Deploy'
+                    def downstreamJobResult = build job: jobName, propagate: false, wait: true, parameters: []
+                    if (downstreamJobResult.getResult() == "FAILURE") {
+                         error("Erro na execução")
+                    }
+                }
+            }
+        }
+    }
+}

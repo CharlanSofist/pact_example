@@ -1,0 +1,33 @@
+pipeline {
+    agent {
+        docker {
+            image 'pactfoundation/pact-cli:latest'
+            args '-v ${WORKSPACE}:/workspace'
+        }
+    }
+
+    stages {
+
+        stage('Record Deploy') {
+            steps {
+                script {
+                    // Publica os contratos usando o Pact CLI
+                    sh '''
+                    pact pact-broker record-deployment --pacticipant consumer --version 1.0.0 --environment test --broker-base-url http://host.docker.internal:9292
+                    '''
+                }
+            }
+        }
+        
+        stage('Can I Deploy') {
+            steps {
+                script {
+                    // Publica os contratos usando o Pact CLI
+                    sh '''
+                    pact pact-broker can-i-deploy --pacticipant consumer --version 1.0.0 --to-environment test --broker-base-url http://host.docker.internal:9292
+                    '''
+                }
+            }
+        }
+    }
+}

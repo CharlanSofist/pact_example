@@ -1,0 +1,21 @@
+pipeline {
+    agent {
+        docker {
+            image 'pactfoundation/pact-cli:latest'
+            args '-v ${WORKSPACE}:/workspace'
+        }
+    }
+
+    stages {
+
+        stage('Publish Contracts') {
+            steps {
+                script {
+                    copyArtifacts projectName: 'Consumer_Tests'
+                    // Publica os contratos usando o Pact CLI
+                    sh 'pact-broker publish consumer/target/pacts --consumer-app-version 1.0.0 --broker-base-url http://host.docker.internal:9292 --branch Master'
+                }
+            }
+        }
+    }
+}
