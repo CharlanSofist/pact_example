@@ -71,7 +71,7 @@ public class ApiProviderContractTest {
     }
 
     private String generateJSONResponse() throws JsonProcessingException {
-        User user = new User("1", "Jhon", "Doe");
+        User user = new User(1, "Jhon", "Doe");
         ObjectMapper objectMapper = new ObjectMapper();
         return objectMapper.writeValueAsString(user);
     }
