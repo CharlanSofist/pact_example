@@ -2,6 +2,7 @@ package com.example.consumer.contract;
 
 import au.com.dius.pact.consumer.MockServer;
 import au.com.dius.pact.consumer.dsl.DslPart;
+import au.com.dius.pact.consumer.dsl.LambdaDsl;
 import au.com.dius.pact.consumer.dsl.PactDslJsonArray;
 import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
 import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
@@ -19,6 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.isNotNull;
 
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -32,14 +34,17 @@ class ConsumerPactTest {
         Map<String, String> headers = new HashMap<>();
         headers.put("Content-Type", "application/json");
 
-        DslPart requestBody = new PactDslJsonBody()
-                .stringType("firstName")
-                .stringType("lastName");
+        DslPart requestBody = LambdaDsl.newJsonBody((o) -> {
+                    o.stringType("firstName");
+                    o.stringType("lastName");
+                }).build();
 
-        PactDslJsonBody responseBody = new PactDslJsonBody()
-                .stringType("id")
-                .stringType("firstName")
-                .stringType("lastName");
+        DslPart responseBody = LambdaDsl.newJsonBody((o) ->{
+                    o.stringType("id");
+                    o.stringType("firstName");
+                    o.stringType("lastName");
+        }).build();
+
 
         return builder
                 .given("Provider is available")

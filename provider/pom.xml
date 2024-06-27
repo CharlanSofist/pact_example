@@ -45,6 +45,25 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+            <plugin>
+                <groupId>au.com.dius.pact.provider</groupId>
+                <artifactId>maven</artifactId>
+                <version>4.6.10</version>
+                <configuration>
+                    <pactBrokerUrl>http://host.docker.internal:9292/</pactBrokerUrl>
+                    <pactBrokerUsername> </pactBrokerUsername>
+                    <pactBrokerPassword> </pactBrokerPassword>
+                    <trimSnapshot>true</trimSnapshot>
+                    <failIfNoPactsFound>false</failIfNoPactsFound>
+                    <configuration>
+                        <pact.showStacktrace>true</pact.showStacktrace>
+                        <pact.showFullDiff>true</pact.showFullDiff>
+                        <pact.verification.ignoreIoErrors>true</pact.verification.ignoreIoErrors>
+                        <pact_do_not_track>true</pact_do_not_track>
+                        <pact.verifier.publishResults>true</pact.verifier.publishResults>
+                    </configuration>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 </project>

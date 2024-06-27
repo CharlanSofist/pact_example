@@ -1,5 +1,6 @@
 package com.example.provider.pacts.provider;
 
+import au.com.dius.pact.provider.junitsupport.loader.PactBroker;
 import au.com.dius.pact.provider.junitsupport.loader.PactFolder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assumptions;
@@ -23,18 +24,18 @@ import au.com.dius.pact.provider.junitsupport.State;
 
 @Provider("provider")
 @IgnoreNoPactsToVerify(ignoreIoErrors = "true")
-@PactFolder("src/test/resources/pact/")
+@PactBroker(url = "http://host.docker.internal:9292")
 public class ApiProviderContractTest {
 
     private static WireMockServer mockServer;
 
     @BeforeEach
     void setUp(PactVerificationContext context) {
-        mockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().port(8080));
+        mockServer = new WireMockServer(WireMockConfiguration.wireMockConfig().port(8081));
         mockServer.start();
 
         if (context != null) {
-            context.setTarget(new HttpTestTarget("127.0.0.1", 8080, "/"));
+            context.setTarget(new HttpTestTarget("127.0.0.1", 8081, "/"));
         } else {
             assumerNoPacts();
 

@@ -20,28 +20,11 @@ services:
       PACT_BROKER_DATABASE_URL: "postgres://postgres:password@postgres/postgres"
       PACT_BROKER_LOG_LEVEL: INFO
       PACT_BROKER_SQL_LOG_LEVEL: DEBUG
+      PACT_BROKER_WEBHOOK_HTTP_METHOD_WHITELIST: POST GET PUT PATCH DELETE
+      PACT_BROKER_WEBHOOK_SCHEME_WHITELIST: http
+      PACT_BROKER_WEBHOOK_HOST_WHITELIST: /.*/
       PACT_BROKER_DATABASE_CONNECT_MAX_RETRIES: "5"
       PACT_BROKER_BASE_URL: 'https://localhost http://localhost http://localhost:9292 http://pact-broker:9292 https://host.docker.internal http://host.docker.internal http://host.docker.internal:9292'
-
-
-  jenkins:
-    image: jenkins/jenkins:lts
-    user: root
-    privileged: true
-    container_name: jenkins
-    depends_on:
-      - dind
-    ports:
-      - 8080:8080
-      - 50000:50000
-    volumes:
-      - ./jenkins:/var/jenkins_home
-      - /usr/bin/docker:/usr/bin/docker
-      - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/local/bin/docker-compose:/usr/local/bin/docker-compose
-    networks:
-      - jenkins-net
-  
 
 volumes:
   pactbroker_data:
