@@ -18,7 +18,7 @@ public class UserRepository {
     }
 
     public User saveUser(User user) {
-        String id = UUID.randomUUID().toString();
+        int id = 32;
         user.setId(id);
         users.add(user);
         return user;
