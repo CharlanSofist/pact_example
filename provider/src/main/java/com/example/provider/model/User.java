@@ -2,21 +2,21 @@ package com.example.provider.model;
 
 
 public class User {
-    private String id;
+    private Integer id;
     private String firstName;
     private String lastName;
 
-    public User(String id, String firstName, String lastName) {
+    public User(Integer id, String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.id = id;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
