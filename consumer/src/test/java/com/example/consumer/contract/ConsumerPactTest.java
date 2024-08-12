@@ -40,7 +40,7 @@ class ConsumerPactTest {
                 }).build();
 
         DslPart responseBody = LambdaDsl.newJsonBody((o) ->{
-                    o.stringType("id");
+                    o.integerType("id");
                     o.stringType("firstName");
                     o.stringType("lastName");
         }).build();
