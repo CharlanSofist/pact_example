@@ -29,7 +29,7 @@ public class UserRepositoryTest {
 
     @Test
     public void testSaveUser() {
-        User user = new User(1, "John", "Doe");
+        User user = new User("1", "John", "Doe");
         when(mockUsers.add(user)).thenReturn(true);
 
         User savedUser = userRepository.saveUser(user);
